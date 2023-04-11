@@ -1,11 +1,11 @@
-import { PrimarySearchAppBar } from "components/home/PrimarySearchAppBar";
+import { PersistentDrawerRight } from "components/home/Home";
 import React, { memo } from "react";
 
 
 export const TemplateHome = memo(() => {
   return (
     <>
-      <PrimarySearchAppBar />
+      <PersistentDrawerRight />
     </>
   );
 });

@@ -1,7 +1,6 @@
-import * as React from 'react';
+import  React, { memo } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
+import { Box, Drawer, } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,6 +13,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Menu, ChevronLeft, ChevronRight, AccountCircle, Inbox, Star, Inventory, LibraryAddCheck, Delete, Settings } from "@mui/icons-material";
+import SearchIcon from '@mui/icons-material/Search';
+import { Search, SearchIconWrapper, StyledInputBase } from "components/home/search-bar/PrimarySearchBar";
 
 const drawerWidth = 240;
 
@@ -66,7 +67,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export default function PersistentDrawerRight() {
+export const PersistentDrawerRight = memo(() => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -107,6 +108,15 @@ export default function PersistentDrawerRight() {
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
             Todo
           </Typography>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="クイック検索"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -170,4 +180,4 @@ export default function PersistentDrawerRight() {
       </Drawer>
     </Box>
   );
-}
+})
