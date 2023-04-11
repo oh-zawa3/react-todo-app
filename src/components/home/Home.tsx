@@ -9,20 +9,11 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import StarIcon from '@mui/icons-material/Star';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Menu, ChevronLeft, ChevronRight, AccountCircle, Inbox, Star, Inventory, LibraryAddCheck, Delete, Settings } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -90,19 +81,19 @@ export default function PersistentDrawerRight() {
   const getIcon = (text: string) => {
     switch(text) {
       case 'Inbox':
-        return <InboxIcon />;
+        return <Inbox />;
       case 'Today\'s':
-        return <StarIcon />;
+        return <Star />;
       case 'Sometimes':
-        return <InventoryIcon />;
+        return <Inventory />;
       case 'CompletionLog':
-        return <LibraryAddCheckIcon />;
+        return <LibraryAddCheck />;
         case 'Trash':
-        return <DeleteIcon />;
+        return <Delete />;
         case 'Profile':
-          return <AccountCircleIcon />;
+          return <AccountCircle />;
         case 'Settings':
-        return <SettingsIcon />;
+        return <Settings />;
       default:
         return '';
     }
@@ -123,7 +114,7 @@ export default function PersistentDrawerRight() {
             onClick={handleDrawerOpen}
             sx={{ ...(open && { display: 'none' }) }}
           >
-            <MenuIcon />
+            <Menu />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -147,7 +138,7 @@ export default function PersistentDrawerRight() {
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === 'rtl' ? <ChevronLeft /> : <ChevronRight />}
           </IconButton>
         </DrawerHeader>
         <Divider />
