@@ -1,6 +1,6 @@
 import  React, { memo } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Drawer, } from '@mui/material';
+import { Box, Drawer, Tab, } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,7 +14,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Menu, ChevronLeft, ChevronRight, AccountCircle, Inbox, Star, Inventory, LibraryAddCheck, Delete, Settings } from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
-import { Search, SearchIconWrapper, StyledInputBase } from "components/home/search-bar/PrimarySearchBar";
+import { Search, SearchIconWrapper, StyledInputBase } from "components/Home/SearchForm/PrimarySearchForm";
+import { TodoForm } from "components/Home/TodoForm";
 
 const drawerWidth = 240;
 
@@ -106,9 +107,9 @@ export const PersistentDrawerRight = memo(() => {
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
-            Todo
+            TodoApp
           </Typography>
-          <Search>
+          <Search sx={{ mr: 'auto' }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -130,8 +131,7 @@ export const PersistentDrawerRight = memo(() => {
       </AppBar>
       <Main open={open}>
         <DrawerHeader />
-        <Typography paragraph>
-          各リストボタン（ProfileやInbox）を押した際に、この部分だけ変えたい
+        <Typography>
         </Typography>
       </Main>
       <Drawer
@@ -163,7 +163,7 @@ export const PersistentDrawerRight = memo(() => {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+          </List>
         <Divider />
         <List>
           {['Trash', 'Profile', 'Settings'].map((text, index) => (
