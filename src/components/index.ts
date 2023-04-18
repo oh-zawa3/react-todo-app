@@ -1,1 +1,1 @@
-export * from "components/Home";
+export * from "Components/Home";

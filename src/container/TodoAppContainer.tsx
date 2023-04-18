@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { TemplateHome } from 'components';
+import { TemplateHome } from 'Components';
 
 /**
  * Todo App の container

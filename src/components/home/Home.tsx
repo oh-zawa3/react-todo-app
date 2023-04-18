@@ -14,8 +14,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Menu, ChevronLeft, ChevronRight, AccountCircle, Inbox, Star, Inventory, LibraryAddCheck, Delete, Settings } from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
-import { Search, SearchIconWrapper, StyledInputBase } from "components/Home/SearchForm/PrimarySearchForm";
-import { TodoForm } from "components/Home/TodoForm";
+import { Search, SearchIconWrapper, StyledInputBase } from "Components/Home/SearchForm/PrimarySearchForm";
+import { TemplateMain } from "Components/Home/TemplateMain/TemplateMain";
+import { TodoForm } from 'Components/Home/TodoForm';
 
 const drawerWidth = 240;
 
@@ -106,10 +107,10 @@ export const PersistentDrawerRight = memo(() => {
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
-            TodoApp
+          <Typography variant="h5" noWrap component="div">
+            Todo
           </Typography>
-          <Search sx={{ mr: 'auto' }}>
+          <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -118,6 +119,7 @@ export const PersistentDrawerRight = memo(() => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+          <Box sx={{ flexGrow: 1 }}  />
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -132,6 +134,8 @@ export const PersistentDrawerRight = memo(() => {
       <Main open={open}>
         <DrawerHeader />
         <Typography>
+          <TodoForm />
+          <TemplateMain />
         </Typography>
       </Main>
       <Drawer

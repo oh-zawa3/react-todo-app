@@ -1,4 +1,4 @@
-import { PersistentDrawerRight } from "components/Home/Home";
+import { PersistentDrawerRight } from "Components/Home/Home";
 import React, { memo } from "react";
 
 

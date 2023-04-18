@@ -10,22 +10,21 @@ import TextField from '@mui/material/TextField';
  * @returns
  */
 export const TextFields = (props:any) => {
-  const { title, handleChange } = props;
+  const { handleChange } = props;
 
   return (
     <Box
       component="form"
       sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
+        '& > :not(style)': { m: 1, width: '30ch' },
       }}
       noValidate
       autoComplete="off"
     >
-      <h1>{title}</h1>
       <TextField
         id="outlined-basic"
-        name={title}
-        label={`ここに${title}を入力`}
+        name="todo"
+        label={`ここにtodoを入力`}
         variant="outlined"
         // ↓エラー解消のため一時コメントアウト
         // value={textValue[title]}

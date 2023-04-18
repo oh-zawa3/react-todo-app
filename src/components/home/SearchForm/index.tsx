@@ -1,1 +1,1 @@
-export * from "components/Home/SearchForm";
+export * from "Components/Home/SearchForm";

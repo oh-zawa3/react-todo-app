@@ -1,1 +1,1 @@
-export { TemplateButton } from "components/Home/TodoForm/Button/TemplateButton"
+export { TemplateButton } from "Components/Home/TodoForm/Button/TemplateButton"
