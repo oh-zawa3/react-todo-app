@@ -27,7 +27,7 @@ export const TodoForm = memo(() => {
 
     /** ボタンの挙動の管理  */
   const handleClickButton = () => {
-    alert(textValue);
+    alert(textValue.todo);
   };
 
   return (

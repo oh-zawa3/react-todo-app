@@ -1,4 +1,4 @@
-import  React, { memo } from 'react';
+import  React, { memo, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { Box, Drawer, Tab, } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -17,6 +17,18 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Search, SearchIconWrapper, StyledInputBase } from "Components/Home/SearchForm/PrimarySearchForm";
 import { TemplateMain } from "Components/Home/TemplateMain/TemplateMain";
 import { TodoForm } from 'Components/Home/TodoForm';
+
+/**  */
+export type Todo = {
+  text: string,
+  isDone: boolean,
+  deadline: string
+  // ... 他にも必要なものがあれば
+}
+export const [todoList, setTodoList] = useState<Todo[]>([])
+const addTodo = (todo: Todo) => {
+  setTodoList([...todoList, todo])
+}
 
 const drawerWidth = 240;
 
@@ -134,8 +146,12 @@ export const PersistentDrawerRight = memo(() => {
       <Main open={open}>
         <DrawerHeader />
         <Typography>
-          <TodoForm />
-          <TemplateMain />
+          <TodoForm
+            onClick={addTodo}
+          />
+          <TemplateMain
+            todoList={todoList}
+          />
         </Typography>
       </Main>
       <Drawer
