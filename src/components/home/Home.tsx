@@ -17,18 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Search, SearchIconWrapper, StyledInputBase } from "Components/Home/SearchForm/PrimarySearchForm";
 import { TemplateMain } from "Components/Home/TemplateMain/TemplateMain";
 import { TodoForm } from 'Components/Home/TodoForm';
-
-/**  */
-export type Todo = {
-  text: string,
-  isDone: boolean,
-  deadline: string
-  // ... 他にも必要なものがあれば
-}
-export const [todoList, setTodoList] = useState<Todo[]>([])
-export const addTodo = (todo: Todo) => {
-  setTodoList([...todoList, todo])
-}
+import { Todo } from 'types/Todo';
 
 const drawerWidth = 240;
 
@@ -93,6 +82,11 @@ export const PersistentDrawerRight = memo(() => {
     setOpen(false);
   };
 
+  const [todoList, setTodoList] = useState<Todo[]>([])
+  const addTodo = (todo: Todo) => {
+    setTodoList([...todoList, todo])
+  }
+
   const getIcon = (text: string) => {
     switch(text) {
       case 'Inbox':
@@ -147,7 +141,7 @@ export const PersistentDrawerRight = memo(() => {
         <DrawerHeader />
         <Typography>
           <TodoForm
-            onClick={addTodo}
+            onClick={(todo) => addTodo(todo)}
           />
           <TemplateMain
             todoList={todoList}
