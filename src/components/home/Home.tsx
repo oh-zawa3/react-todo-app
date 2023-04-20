@@ -26,7 +26,7 @@ export type Todo = {
   // ... 他にも必要なものがあれば
 }
 export const [todoList, setTodoList] = useState<Todo[]>([])
-const addTodo = (todo: Todo) => {
+export const addTodo = (todo: Todo) => {
   setTodoList([...todoList, todo])
 }
 

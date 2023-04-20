@@ -5,7 +5,7 @@ import { TextFields } from "Components/Home/TodoForm/TextField";
 import { Box } from '@mui/material';
 
 
-export const TodoForm = memo(() => {
+export const TodoForm = memo((addTodo) => {
   /** TextFields についての state */
   const [textValue, setTextValue]:any = useState(initialTextValue);
   /** button　押下可否についての　state
@@ -16,7 +16,7 @@ export const TodoForm = memo(() => {
 
   /** TextFields の値の管理 */
   const handleChangeText = useCallback((e:any) => {
-    setTextValue((textValue:any) => ({
+    setTextValue((textValue:string[]) => ({
       ...textValue,
       [e.target.name]: e.target.value,
     }))
@@ -27,7 +27,7 @@ export const TodoForm = memo(() => {
 
     /** ボタンの挙動の管理  */
   const handleClickButton = () => {
-    alert(textValue.todo);
+    addTodo;
   };
 
   return (

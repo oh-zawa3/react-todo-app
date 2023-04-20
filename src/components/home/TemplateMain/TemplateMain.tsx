@@ -8,15 +8,14 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { todoList } from "Components/Home/Home";
 import { Todo } from "Components/Home/Home"
 
 export type Props = {
   todoList: Todo[];
 }
 
-export const TemplateMain: React.FC<Props> = () => {
-  const [checked, setChecked] = useState([todoList]);
+export const TemplateMain: React.FC<Props> = ({ todoList }) => {
+  const [checked, setChecked] = useState([]);
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
