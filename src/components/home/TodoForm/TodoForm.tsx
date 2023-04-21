@@ -3,35 +3,32 @@ import { initialTextValue } from "Components/Home/TodoForm/const";
 import { TemplateButton } from "Components/Home/TodoForm/Button";
 import { TextFields } from "Components/Home/TodoForm/TextField";
 import { Box } from '@mui/material';
-import { TodoFormProps } from "types/Todo";
+import { Todo } from "types/Todo";
 
+
+type TodoFormProps = {
+  onClick: (todo: Todo) => void;
+}
 
 export const TodoForm = memo((props: TodoFormProps) => {
   const { onClick } = props;
   /** TextFields についての state */
   const [textValue, setTextValue] = useState(initialTextValue);
-  /** button　押下可否についての　state
-   * フォームが空の時、ボタンを押下できないようにする
-   */
-  const [disable, setDisable] = useState(true);
-
 
   /** TextFields の値の管理 */
   const handleChangeText = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-  setDisable(e.target.value === "" ? true : false);
-  setTextValue((textValue) => ({
-    ...textValue,
-    [e.target.name]: e.target.value,
-  }))
-}, []);
+    setTextValue((textValue) => ({
+      ...textValue,
+      [e.target.name]: e.target.value,
+    }))
+  }, []);
 
   console.log(textValue);
 
-    /** ボタンの挙動の管理  */
+  /** ボタンの挙動の管理  */
   const handleClickButton = () => {
     onClick({ text: textValue.todo, isDone: false, deadline: "" }); // deadline は仮
     setTextValue(initialTextValue);
-    setDisable(true);
   };
 
   return (
@@ -46,7 +43,7 @@ export const TodoForm = memo((props: TodoFormProps) => {
           title="todo"
           outputValue={textValue}
           handleClick={handleClickButton}
-          disabled={disable}
+          disabled={textValue.todo === ""}
         />
       </Box>
     </>

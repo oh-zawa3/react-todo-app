@@ -1,11 +1,14 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { TextFieldsProps } from "types/Todo";
 
+type TextFieldsProps = {
+  title: string;
+  textValue: { todo: string };
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 /**
  * form の一般化
- * title: セレクトボックスで選択されている値(label)
  * textValue: formの値
  * @param props
  * @returns
