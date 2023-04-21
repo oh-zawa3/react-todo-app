@@ -8,16 +8,16 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Todo } from "Components/Home/Home"
+import { Todo } from 'types/Todo';
 
 export type Props = {
   todoList: Todo[];
 }
 
 export const TemplateMain: React.FC<Props> = ({ todoList }) => {
-  const [checked, setChecked] = useState([]);
+  const [checked, setChecked] = useState<Todo[]>([]);
 
-  const handleToggle = (value: number) => () => {
+  const handleToggle = (value: Todo) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -32,12 +32,12 @@ export const TemplateMain: React.FC<Props> = ({ todoList }) => {
 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {[todoList].map((value) => {
+      {todoList.map((value) => {
         const labelId = `checkbox-list-label-${value}`;
 
         return (
           <ListItem
-            key={value}
+            key={`${value.text}_${value.deadline}`}
             secondaryAction={
               <IconButton edge="end" aria-label="comments">
                 <EditIcon />
@@ -56,7 +56,7 @@ export const TemplateMain: React.FC<Props> = ({ todoList }) => {
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+              <ListItemText id={labelId} primary={value.text} />
             </ListItemButton>
           </ListItem>
         );
