@@ -32,7 +32,8 @@ export const TodoForm: React.FC<Props> = memo(({onClick}) => {
 
     /** ボタンの挙動の管理  */
   const handleClickButton = () => {
-    onClick({text: textValue.todo, isDone: false, deadline: ""}) // deadline は仮
+    onClick({ text: textValue.todo, isDone: false, deadline: "" }); // deadline は仮
+    setTextValue(initialTextValue);
   };
 
   return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { TextFieldsProps } from "types/Todo";
 
 /**
  * form の一般化
@@ -10,7 +11,7 @@ import TextField from '@mui/material/TextField';
  * @returns
  */
 export const TextFields = (props:any) => {
-  const { handleChange } = props;
+  const { handleChange, textValue } = props;
 
   return (
     <Box
@@ -26,8 +27,7 @@ export const TextFields = (props:any) => {
         name="todo"
         label={`ここにtodoを入力`}
         variant="outlined"
-        // ↓エラー解消のため一時コメントアウト
-        // value={textValue[title]}
+        value={textValue.todo} // ← ここを追加
         onChange={handleChange}
       />
     </Box>
