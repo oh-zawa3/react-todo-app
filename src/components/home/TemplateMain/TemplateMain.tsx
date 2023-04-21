@@ -30,6 +30,16 @@ export const TemplateMain: React.FC<Props> = ({ todoList }) => {
     setChecked(newChecked);
   };
 
+  const handleEdit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
+    event.stopPropagation();
+    console.log(`Editing: ${value.text}`);
+  };
+
+  const handleDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
+    event.stopPropagation();
+    console.log(`Deleting: ${value.text}`);
+  };
+
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       {todoList.map((value) => {
@@ -39,10 +49,14 @@ export const TemplateMain: React.FC<Props> = ({ todoList }) => {
           <ListItem
             key={`${value.text}_${value.deadline}`}
             secondaryAction={
-              <IconButton edge="end" aria-label="comments">
-                <EditIcon />
-                <DeleteIcon />
-              </IconButton>
+              <>
+                <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
+                  <DeleteIcon />
+                </IconButton>
+              </>
             }
             disablePadding
           >
