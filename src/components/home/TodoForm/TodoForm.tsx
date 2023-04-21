@@ -18,11 +18,11 @@ export const TodoForm = memo((props: TodoFormProps) => {
 
   /** TextFields の値の管理 */
   const handleChangeText = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  setDisable(e.target.value === "" ? true : false);
   setTextValue((textValue) => ({
     ...textValue,
     [e.target.name]: e.target.value,
   }))
-  setDisable(e.target.value === "" ? true : false);
 }, []);
 
   console.log(textValue);
@@ -31,6 +31,7 @@ export const TodoForm = memo((props: TodoFormProps) => {
   const handleClickButton = () => {
     onClick({ text: textValue.todo, isDone: false, deadline: "" }); // deadline は仮
     setTextValue(initialTextValue);
+    setDisable(true);
   };
 
   return (
