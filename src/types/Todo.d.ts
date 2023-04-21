@@ -5,11 +5,14 @@ type Todo = {
   // ... 他にも必要なものがあれば
 }
 
-type TextFieldsProps = {
-  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  textValue: {
-    todo: string;
-  };
-};
+type TodoFormProps = {
+  onClick: (todo: Todo) => void;
+}
 
-export {Todo, TextFieldsProps}
+type TextFieldsProps = {
+  title: string;
+  textValue: { todo: string };
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export {Todo, TodoFormProps, TextFieldsProps}

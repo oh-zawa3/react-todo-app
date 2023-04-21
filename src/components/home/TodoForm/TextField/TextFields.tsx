@@ -10,8 +10,7 @@ import { TextFieldsProps } from "types/Todo";
  * @param props
  * @returns
  */
-export const TextFields = (props:any) => {
-  const { handleChange, textValue } = props;
+export const TextFields = ({ title, handleChange, textValue }: TextFieldsProps) => {
 
   return (
     <Box
@@ -25,9 +24,9 @@ export const TextFields = (props:any) => {
       <TextField
         id="outlined-basic"
         name="todo"
-        label={`ここにtodoを入力`}
+        label={`ここに${title}を入力`}
         variant="outlined"
-        value={textValue.todo} // ← ここを追加
+        value={textValue.todo}
         onChange={handleChange}
       />
     </Box>
