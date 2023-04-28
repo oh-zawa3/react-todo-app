@@ -5,13 +5,13 @@ import { TextFields } from "Components/Home/TodoForm/TextField";
 import { Box } from '@mui/material';
 import { Todo } from "types/Todo";
 
+
 type TodoFormProps = {
   onClick: (todo: Todo) => void;
-  nextId: number;
 }
 
 export const TodoForm = memo((props: TodoFormProps) => {
-  const { onClick, nextId } = props;
+  const { onClick } = props;
   /** TextFields についての state */
   const [textValue, setTextValue] = useState(initialTextValue);
 
@@ -27,7 +27,7 @@ export const TodoForm = memo((props: TodoFormProps) => {
 
   /** ボタンの挙動の管理  */
   const handleClickButton = () => {
-    onClick({ id: nextId, text: textValue.todo, isDone: false, deadline: null }); // idを追加
+    onClick({ text: textValue.todo, isDone: false, deadline: null }); // deadline は仮
     setTextValue(initialTextValue);
   };
 
