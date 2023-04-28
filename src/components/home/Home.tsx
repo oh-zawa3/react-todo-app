@@ -1,6 +1,6 @@
-import  React, { memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Drawer, Tab, } from '@mui/material';
+import { Box, Drawer, Tab } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -82,10 +82,27 @@ export const PersistentDrawerRight = memo(() => {
     setOpen(false);
   };
 
-    const [todoList, setTodoList] = useState<Todo[]>([])
+  const [todoList, setTodoList] = useState<Todo[]>([]);
   const addTodo = (todo: Todo) => {
-    setTodoList([...todoList, todo])
-  }
+    setTodoList([...todoList, todo]);
+  };
+
+    const deleteTodo = (id: number) => {
+    setTodoList(todoList.filter((todo) => todo.id !== id));
+  };
+
+  const updateTodo = (id: number, title: string) => {
+    const newTodoList = todoList.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          title,
+        };
+      }
+      return todo;
+    });
+    setTodoList(newTodoList);
+  };
 
 
   const getIcon = (text: string) => {
