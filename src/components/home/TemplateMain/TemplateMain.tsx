@@ -43,7 +43,7 @@ export const TemplateMain: React.FC<Props> = ({ todo, deleteTodo, updateTodo }) 
         :
         <div onClick={() => setIsEditing(true)}>
           <ListItemText
-            primary={todo.title}
+            primary={todo.text}
             secondary={todo.isDone ? 'Completed' : 'Incomplete'}
           />
         </div>
