@@ -1,4 +1,4 @@
-import  React, { memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { Box, Drawer, Tab, } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -18,6 +18,9 @@ import { Search, SearchIconWrapper, StyledInputBase } from "Components/Home/Sear
 import { TemplateMain } from "Components/Home/TemplateMain/TemplateMain";
 import { TodoForm } from 'Components/Home/TodoForm';
 import { Todo } from 'types/Todo';
+
+import Tabs from '@mui/material/Tabs';
+import TabPanel from '@mui/lab/TabPanel';
 
 const drawerWidth = 240;
 
@@ -82,11 +85,10 @@ export const PersistentDrawerRight = memo(() => {
     setOpen(false);
   };
 
-    const [todoList, setTodoList] = useState<Todo[]>([])
+  const [todoList, setTodoList] = useState<Todo[]>([])
   const addTodo = (todo: Todo) => {
     setTodoList([...todoList, todo])
   }
-
 
   const getIcon = (text: string) => {
     switch(text) {
@@ -98,16 +100,21 @@ export const PersistentDrawerRight = memo(() => {
         return <Inventory />;
       case 'CompletionLog':
         return <LibraryAddCheck />;
-        case 'Trash':
+      case 'Trash':
         return <Delete />;
-        case 'Profile':
-          return <AccountCircle />;
-        case 'Settings':
+      case 'Profile':
+        return <AccountCircle />;
+      case 'Settings':
         return <Settings />;
       default:
         return '';
     }
   }
+
+  const [tabValue, setTabValue] = useState(0);
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -141,12 +148,41 @@ export const PersistentDrawerRight = memo(() => {
       <Main open={open}>
         <DrawerHeader />
         <Typography>
-          <TodoForm
-            onClick={(todo) => addTodo(todo)}
-          />
-          <TemplateMain
-            todoList={todoList}
-          />
+          <Tabs value={tabValue} onChange={handleTabChange} orientation="vertical">
+            <Tab label="Inbox" />
+            <Tab label="Today's" />
+            <Tab label="Sometimes" />
+            <Tab label="CompletionLog" />
+            <Tab label="Trash" />
+            <Tab label="Profile" />
+            <Tab label="Settings" />
+          </Tabs>
+          <TabPanel value={tabValue} index={0}>
+            <TodoForm
+              onClick={(todo) => addTodo(todo)}
+            />
+            <TemplateMain
+              todoList={todoList}
+            />
+          </TabPanel>
+          <TabPanel value={tabValue} index={1}>
+            Content for Today's tab goes here
+          </TabPanel>
+          <TabPanel value={tabValue} index={2}>
+            Content for Sometimes tab goes here
+          </TabPanel>
+          <TabPanel value={tabValue} index={3}>
+            Content for CompletionLog tab goes here
+          </TabPanel>
+          <TabPanel value={tabValue} index={4}>
+            Content for Trash tab goes here
+          </TabPanel>
+          <TabPanel value={tabValue} index={5}>
+            Content for Profile tab goes here
+          </TabPanel>
+          <TabPanel value={tabValue} index={6}>
+            Content for Settings tab goes here
+          </TabPanel>
         </Typography>
       </Main>
       <Drawer
@@ -170,7 +206,7 @@ export const PersistentDrawerRight = memo(() => {
         <List>
           {[ 'Inbox', 'Today\'s', 'Sometimes', 'CompletionLog'].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => handleTabChange(null, index)}>
                 <ListItemIcon>
                   {getIcon(text)}
                 </ListItemIcon>
@@ -178,12 +214,12 @@ export const PersistentDrawerRight = memo(() => {
               </ListItemButton>
             </ListItem>
           ))}
-          </List>
+        </List>
         <Divider />
         <List>
           {['Trash', 'Profile', 'Settings'].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => handleTabChange(null, [ 'Inbox', 'Today\'s', 'Sometimes', 'CompletionLog'].length + index)}>
                 <ListItemIcon>
                   {getIcon(text)}
                 </ListItemIcon>
