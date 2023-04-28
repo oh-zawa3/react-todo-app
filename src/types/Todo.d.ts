@@ -1,6 +1,6 @@
 export type Todo = {
   id: number;
   text: string;
-  deadline: string | null; // null合体演算子を使用してデフォルト値を設定する
-  completed: boolean;
-}
+  deadline: string | null;
+  isDone: boolean; // isDoneプロパティを追加する
+};

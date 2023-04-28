@@ -9,74 +9,91 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Todo } from 'types/Todo';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-export type Props = {
-  todoList: Todo[];
-}
+type TodoListItemProps = {
+  todo: Todo;
+  onToggle: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+};
 
-export const TodoMain: React.FC<Props> = ({ todoList }) => {
-  const [checked, setChecked] = useState<number[]>([]);
+const TodoListItem: React.FC<TodoListItemProps> = ({ todo, onToggle, onEdit, onDelete }) => {
+  const [isRemoving, setIsRemoving] = useState(false);
 
-  const handleToggle = (id: number) => () => {
+  const theme = createTheme();
+
+  const handleRemove = () => {
+    setIsRemoving(true);
     setTimeout(() => {
-      setChecked((prevChecked) => prevChecked.filter((value) => value !== id));
-      alert('Todo item has been completed and removed.');
+      onDelete();
     }, 2000);
-
-    setChecked((prevChecked) => {
-      if (prevChecked.indexOf(id) === -1) {
-        return [...prevChecked, id];
-      } else {
-        return prevChecked.filter((value) => value !== id);
-      }
-    });
   };
 
-  const handleEdit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
-    event.stopPropagation();
-    console.log(`Editing: ${value.text}`);
+  return (
+    <ThemeProvider theme={theme}>
+      <ListItem
+        disablePadding
+        sx={{
+          display: todo.isDone && isRemoving ? 'none' : 'flex',
+          textDecoration: todo.isDone ? 'line-through' : 'none',
+          transition: 'all 2s ease',
+        }}
+      >
+        <ListItemButton role={undefined} onClick={onToggle} dense>
+          <ListItemIcon>
+            <Checkbox
+              edge="start"
+              checked={todo.isDone}
+              tabIndex={-1}
+              disableRipple
+              inputProps={{ 'aria-labelledby': `checkbox-list-label-${todo.id}` }}
+            />
+          </ListItemIcon>
+          <ListItemText id={`checkbox-list-label-${todo.id}`} primary={todo.text} />
+        </ListItemButton>
+        <IconButton edge="end" aria-label="edit" onClick={onEdit}>
+          <EditIcon />
+        </IconButton>
+        <IconButton edge="end" aria-label="delete" onClick={handleRemove}>
+          <DeleteIcon />
+        </IconButton>
+      </ListItem>
+    </ThemeProvider>
+  );
+};
+
+type TodoMainProps = {
+  todoList: Todo[];
+  onToggle: (id: number) => void;
+  onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
+};
+
+export const TodoMain: React.FC<TodoMainProps> = ({ todoList, onToggle, onEdit, onDelete }) => {
+  const handleToggle = (id: number) => {
+    onToggle(id);
   };
 
-  const handleDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
-    event.stopPropagation();
-    console.log(`Deleting: ${value.text}`);
+  const handleEdit = (id: number) => {
+    onEdit(id);
+  };
+
+  const handleDelete = (id: number) => {
+    onDelete(id);
   };
 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {todoList.map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
-
-        return (
-          <ListItem
-            key={`${value.text}_${value.deadline}`}
-            secondaryAction={
-              <>
-                <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
-                  <DeleteIcon />
-                </IconButton>
-              </>
-            }
-            disablePadding
-          >
-            <ListItemButton role={undefined} onClick={handleToggle(value.id)} dense>
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={checked.indexOf(value.id) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{ 'aria-labelledby': labelId }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={value.text} />
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
+      {todoList.map((todo) => (
+        <TodoListItem
+          key={todo.id}
+          todo={todo}
+          onToggle={() => handleToggle(todo.id)}
+          onEdit={() => handleEdit(todo.id)}
+          onDelete={() => handleDelete(todo.id)}
+        />
+      ))}
     </List>
   );
-}
+};
