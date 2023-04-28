@@ -141,12 +141,17 @@ export const PersistentDrawerRight = memo(() => {
       <Main open={open}>
         <DrawerHeader />
         <Typography>
-          <TodoForm
-            onClick={(todo) => addTodo(todo)}
-          />
-          <TemplateMain
+{/* {todoList.map((todo) => (
+  <TemplateMain
+    key={todo.id}
+    todo={todo}
+    deleteTodo={deleteTodo}
+    updateTodo={updateTodo}
+  />
+))} */}
+          {/* <TemplateMain
             todoList={todoList}
-          />
+          /> */}
         </Typography>
       </Main>
       <Drawer
