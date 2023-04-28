@@ -8,92 +8,86 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { styled } from '@mui/material/styles';
 import { Todo } from 'types/Todo';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-type TodoListItemProps = {
-  todo: Todo;
-  onToggle: () => void;
-  onEdit: () => void;
-  onDelete: () => void;
-};
+export type Props = {
+  todoList: Todo[];
+}
 
-const TodoListItem: React.FC<TodoListItemProps> = ({ todo, onToggle, onEdit, onDelete }) => {
-  const [isRemoving, setIsRemoving] = useState(false);
+const StyledListItem = styled(ListItem)(({ theme, isDone }: { theme: any; isDone: boolean }) => ({
+  display: isDone ? 'none' : 'flex',
+  '&.isDone': {
+    textDecoration: 'line-through',
+    '& .MuiListItemIcon-root': {
+      opacity: 0.5,
+    },
+  },
+}));
 
-  const theme = createTheme();
+const StyledListItemText = styled(ListItemText)({
+  overflowWrap: 'break-word',
+});
 
-  const handleRemove = () => {
-    setIsRemoving(true);
+export const TodoMain: React.FC<Props> = ({ todoList }) => {
+  const [checkedIds, setCheckedIds] = useState<number[]>([]);
+
+  const handleToggle = (id: number) => () => {
+    setCheckedIds((prevIds) => [...prevIds, id]);
     setTimeout(() => {
-      onDelete();
+      setCheckedIds((prevIds) => prevIds.filter((value) => value !== id));
     }, 2000);
   };
 
-  return (
-    <ThemeProvider theme={theme}>
-      <ListItem
-        disablePadding
-        sx={{
-          display: todo.isDone && isRemoving ? 'none' : 'flex',
-          textDecoration: todo.isDone ? 'line-through' : 'none',
-          transition: 'all 2s ease',
-        }}
-      >
-        <ListItemButton role={undefined} onClick={onToggle} dense>
-          <ListItemIcon>
-            <Checkbox
-              edge="start"
-              checked={todo.isDone}
-              tabIndex={-1}
-              disableRipple
-              inputProps={{ 'aria-labelledby': `checkbox-list-label-${todo.id}` }}
-            />
-          </ListItemIcon>
-          <ListItemText id={`checkbox-list-label-${todo.id}`} primary={todo.text} />
-        </ListItemButton>
-        <IconButton edge="end" aria-label="edit" onClick={onEdit}>
-          <EditIcon />
-        </IconButton>
-        <IconButton edge="end" aria-label="delete" onClick={handleRemove}>
-          <DeleteIcon />
-        </IconButton>
-      </ListItem>
-    </ThemeProvider>
-  );
-};
-
-type TodoMainProps = {
-  todoList: Todo[];
-  onToggle: (id: number) => void;
-  onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
-};
-
-export const TodoMain: React.FC<TodoMainProps> = ({ todoList, onToggle, onEdit, onDelete }) => {
-  const handleToggle = (id: number) => {
-    onToggle(id);
+  const handleEdit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
+    event.stopPropagation();
+    console.log(`Editing: ${value.text}`);
   };
 
-  const handleEdit = (id: number) => {
-    onEdit(id);
+  const handleDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
+    event.stopPropagation();
+    console.log(`Deleting: ${value.text}`);
   };
 
-  const handleDelete = (id: number) => {
-    onDelete(id);
-  };
+  const filteredTodoList = todoList.filter((todo) => !checkedIds.includes(todo.id));
 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {todoList.map((todo) => (
-        <TodoListItem
-          key={todo.id}
-          todo={todo}
-          onToggle={() => handleToggle(todo.id)}
-          onEdit={() => handleEdit(todo.id)}
-          onDelete={() => handleDelete(todo.id)}
-        />
-      ))}
+      {filteredTodoList.map((value) => {
+        const labelId = `checkbox-list-label-${value}`;
+
+        return (
+          <StyledListItem
+            key={`${value.text}_${value.deadline}`}
+            secondaryAction={
+              <>
+                <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            }
+            disablePadding
+            isDone={checkedIds.includes(value.id)}
+            className={checkedIds.includes(value.id) ? 'isDone' : ''}
+          >
+            <ListItemButton role={undefined} onClick={handleToggle(value.id)} dense>
+              <ListItemIcon>
+                <Checkbox
+                  edge="start"
+                  checked={checkedIds.indexOf(value.id) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{ 'aria-labelledby': labelId }}
+                />
+              </ListItemIcon>
+              <StyledListItemText id={labelId} primary={value.text} />
+            </ListItemButton>
+          </StyledListItem>
+        );
+      })}
     </List>
   );
 };
