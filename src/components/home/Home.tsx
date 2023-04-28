@@ -1,6 +1,6 @@
-import React, { memo, useState } from 'react';
+import  React, { memo, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Drawer, Tab, Tabs } from '@mui/material';
+import { Box, Drawer, Tab, } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,10 +14,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Menu, ChevronLeft, ChevronRight, AccountCircle, Inbox, Star, Inventory, LibraryAddCheck, Delete, Settings } from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
-import { Search, SearchIconWrapper, StyledInputBase } from "./SearchForm/PrimarySearchForm";
-import { TemplateMain } from "./TemplateMain/TemplateMain";
-import { TodoForm } from './TodoForm';
-import { Todo } from '../types/Todo';
+import { Search, SearchIconWrapper, StyledInputBase } from "Components/Home/SearchForm/PrimarySearchForm";
+import { TemplateMain } from "Components/Home/TemplateMain/TemplateMain";
+import { TodoForm } from 'Components/Home/TodoForm';
+import { Todo } from 'types/Todo';
 
 const drawerWidth = 240;
 
@@ -70,39 +70,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-const TabPanel = (props: TabPanelProps) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      aria-labelledby={`tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ mt: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-};
-
-export const Home = memo(() => {
+export const PersistentDrawerRight = memo(() => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [tabValue, setTabValue] = useState(0);
-  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -112,31 +82,32 @@ export const Home = memo(() => {
     setOpen(false);
   };
 
-  const [todoList, setTodoList] = useState<Todo[]>([]);
+    const [todoList, setTodoList] = useState<Todo[]>([])
   const addTodo = (todo: Todo) => {
-    setTodoList([...todoList, todo]);
-  };
+    setTodoList([...todoList, todo])
+  }
+
 
   const getIcon = (text: string) => {
-    switch (text) {
+    switch(text) {
       case 'Inbox':
         return <Inbox />;
-      case "Today's":
+      case 'Today\'s':
         return <Star />;
       case 'Sometimes':
         return <Inventory />;
       case 'CompletionLog':
         return <LibraryAddCheck />;
-      case 'Trash':
+        case 'Trash':
         return <Delete />;
-      case 'Profile':
-        return <AccountCircle />;
-      case 'Settings':
+        case 'Profile':
+          return <AccountCircle />;
+        case 'Settings':
         return <Settings />;
       default:
         return '';
     }
-  };
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -155,7 +126,7 @@ export const Home = memo(() => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 1 }}  />
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -166,89 +137,62 @@ export const Home = memo(() => {
             <Menu />
           </IconButton>
         </Toolbar>
-        <Tabs
-          value={tabValue}
-          onChange={handleChangeTab}
-          aria-label="todo tabs"
-          variant="scrollable"
-          scrollButtons="auto"
-        >
-          <Tab label="Inbox" icon={<Inbox />} {...a11yProps(0)} />
-          <Tab label="Today's" icon={<Star />} {...a11yProps(1)} />
-          <Tab label="Sometimes" icon={<Inventory />} {...a11yProps(2)} />
-          <Tab label="CompletionLog" icon={<LibraryAddCheck />} {...a11yProps(3)} />
-          <Tab label="Trash" icon={<Delete />} {...a11yProps(4)} />
-          <Tab label="Profile" icon={<AccountCircle />} {...a11yProps(5)} />
-          <Tab label="Settings" icon={<Settings />} {...a11yProps(6)} />
-        </Tabs>
       </AppBar>
       <Main open={open}>
         <DrawerHeader />
         <Typography>
-          <TodoForm onClick={(todo) => addTodo(todo)} />
-          <TabPanel value={tabValue} index={0}>
-            Content for Inbox tab goes here
-          </TabPanel>
-          <TabPanel value={tabValue} index={1}>
-            Content for Today's tab goes here
-          </TabPanel>
-          <TabPanel value={tabValue} index={2}>
-            Content for Sometimes tab goes here
-          </TabPanel>
-          <TabPanel value={tabValue} index={3}>
-            Content for CompletionLog tab goes here
-          </TabPanel>
-<TabPanel value={tabValue} index={4}>
-  Content for Trash tab goes here
-</TabPanel>
-<TabPanel value={tabValue} index={5}>
-  Content for Profile tab goes here
-</TabPanel>
-<TabPanel value={tabValue} index={6}>
-  Content for Settings tab goes here
-</TabPanel>
-</Typography>
-</Main>
-<Drawer
-  sx={{
-    width: drawerWidth,
-    flexShrink: 0,
-    '& .MuiDrawer-paper': {
-      width: drawerWidth,
-    },
-  }}
-  variant="persistent"
-  anchor="right"
-  open={open}
->
-  <DrawerHeader>
-    <IconButton onClick={handleDrawerClose}>
-      {theme.direction === 'rtl' ? <ChevronLeft /> : <ChevronRight />}
-    </IconButton>
-  </DrawerHeader>
-  <Divider />
-  <List>
-    {['Inbox', "Today's", 'Sometimes', 'CompletionLog'].map((text, index) => (
-      <ListItem key={text} disablePadding>
-        <ListItemButton onClick={() => setTabValue(index)}>
-          <ListItemIcon>{getIcon(text)}</ListItemIcon>
-          <ListItemText primary={text} />
-        </ListItemButton>
-      </ListItem>
-    ))}
-  </List>
-  <Divider />
-  <List>
-    {['Trash', 'Profile', 'Settings'].map((text, index) => (
-      <ListItem key={text} disablePadding>
-        <ListItemButton onClick={() => setTabValue(index + 4)}>
-          <ListItemIcon>{getIcon(text)}</ListItemIcon>
-          <ListItemText primary={text} />
-        </ListItemButton>
-      </ListItem>
-    ))}
-  </List>
-</Drawer>
-</Box>
-);
-});
+          <TodoForm
+            onClick={(todo) => addTodo(todo)}
+          />
+          <TemplateMain
+            todoList={todoList}
+          />
+        </Typography>
+      </Main>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+          },
+        }}
+        variant="persistent"
+        anchor="right"
+        open={open}
+      >
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronLeft /> : <ChevronRight />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          {[ 'Inbox', 'Today\'s', 'Sometimes', 'CompletionLog'].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {getIcon(text)}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+          </List>
+        <Divider />
+        <List>
+          {['Trash', 'Profile', 'Settings'].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {getIcon(text)}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    </Box>
+  );
+})
