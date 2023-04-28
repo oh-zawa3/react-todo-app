@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { TemplateHome } from 'Components';
+import { Home } from 'Components';
 
 /**
  * Todo App の container
@@ -7,7 +7,7 @@ import { TemplateHome } from 'Components';
 export const TodoAppContainer = memo(() => {
   return (
     <>
-      <TemplateHome />
+      <Home />
     </>
   );
 });

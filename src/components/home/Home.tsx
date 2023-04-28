@@ -60,7 +60,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export const PersistentDrawerRight = memo(() => {
+export const Home = memo(() => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
