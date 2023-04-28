@@ -15,19 +15,21 @@ export type Props = {
 }
 
 export const TodoMain: React.FC<Props> = ({ todoList }) => {
-  const [checked, setChecked] = useState<Todo[]>([]);
+  const [checked, setChecked] = useState<number[]>([]);
 
-  const handleToggle = (value: Todo) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  const handleToggle = (id: number) => () => {
+    setTimeout(() => {
+      setChecked((prevChecked) => prevChecked.filter((value) => value !== id));
+      alert('Todo item has been completed and removed.');
+    }, 2000);
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
+    setChecked((prevChecked) => {
+      if (prevChecked.indexOf(id) === -1) {
+        return [...prevChecked, id];
+      } else {
+        return prevChecked.filter((value) => value !== id);
+      }
+    });
   };
 
   const handleEdit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
@@ -60,11 +62,11 @@ export const TodoMain: React.FC<Props> = ({ todoList }) => {
             }
             disablePadding
           >
-            <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+            <ListItemButton role={undefined} onClick={handleToggle(value.id)} dense>
               <ListItemIcon>
                 <Checkbox
                   edge="start"
-                  checked={checked.indexOf(value) !== -1}
+                  checked={checked.indexOf(value.id) !== -1}
                   tabIndex={-1}
                   disableRipple
                   inputProps={{ 'aria-labelledby': labelId }}

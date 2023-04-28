@@ -1,6 +1,6 @@
 export type Todo = {
-  text: string,
-  isDone: boolean,
-  deadline?: Date | null
-  // ... 他にも必要なものがあれば
+  id: number;
+  text: string;
+  deadline: string | null; // null合体演算子を使用してデフォルト値を設定する
+  completed: boolean;
 }
