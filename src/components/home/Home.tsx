@@ -136,6 +136,9 @@ export const Home = memo(() => {
           />
           <TodoMain
             todoList={todoList}
+            onToggle={() => {}}
+            onEdit={() => {}}
+            onDelete={() => {}}
           />
         </Typography>
       </Main>
