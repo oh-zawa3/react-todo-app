@@ -14,7 +14,7 @@ export type Props = {
   todoList: Todo[];
 }
 
-export const TemplateMain: React.FC<Props> = ({ todoList }) => {
+export const TodoMain: React.FC<Props> = ({ todoList }) => {
   const [checked, setChecked] = useState<Todo[]>([]);
 
   const handleToggle = (value: Todo) => () => {

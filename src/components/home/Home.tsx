@@ -1,23 +1,13 @@
-import  React, { memo, useState } from 'react';
+import React, { memo, useState } from 'react';
+import { Box, Drawer, AppBarProps as MuiAppBarProps, AppBar as MuiAppBar, Toolbar, CssBaseline, List, Typography, Divider, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Menu, ChevronLeft, ChevronRight, AccountCircle, Inbox, Star, Inventory, LibraryAddCheck, Delete, Settings } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Drawer, Tab, } from '@mui/material';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import CssBaseline from '@mui/material/CssBaseline';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { Menu, ChevronLeft, ChevronRight, AccountCircle, Inbox, Star, Inventory, LibraryAddCheck, Delete, Settings } from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
-import { Search, SearchIconWrapper, StyledInputBase } from "Components/Home/SearchForm/PrimarySearchForm";
-import { TemplateMain } from "Components/Home/TemplateMain/TemplateMain";
+import { Search, SearchIconWrapper, StyledInputBase } from 'Components/Home/SearchForm/PrimarySearchForm';
+import { TodoMain } from 'Components/Home/TodoMain/TodoMain';
 import { TodoForm } from 'Components/Home/TodoForm';
 import { Todo } from 'types/Todo';
+
 
 const drawerWidth = 240;
 
@@ -144,7 +134,7 @@ export const PersistentDrawerRight = memo(() => {
           <TodoForm
             onClick={(todo) => addTodo(todo)}
           />
-          <TemplateMain
+          <TodoMain
             todoList={todoList}
           />
         </Typography>
