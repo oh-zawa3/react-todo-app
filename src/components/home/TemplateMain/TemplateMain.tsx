@@ -1,80 +1,63 @@
-import React, { useState } from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
+import { useState } from 'react';
+import { IconButton, ListItem, ListItemIcon, Checkbox, ListItemText, TextField, ListItemSecondaryAction, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Todo } from 'types/Todo';
 
-export type Props = {
-  todoList: Todo[];
-}
+type Props = {
+  todo: Todo;
+  deleteTodo: (id: number) => void;
+  updateTodo: (id: number, title: string) => void;
+};
 
-export const TemplateMain: React.FC<Props> = ({ todoList }) => {
-  const [checked, setChecked] = useState<Todo[]>([]);
+export const TemplateMain: React.FC<Props> = ({ todo, deleteTodo, updateTodo }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentTitle, setCurrentTitle] = useState(todo.text);
 
-  const handleToggle = (value: Todo) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-
-  const handleEdit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
-    event.stopPropagation();
-    console.log(`Editing: ${value.text}`);
-  };
-
-  const handleDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
-    event.stopPropagation();
-    console.log(`Deleting: ${value.text}`);
-  };
+  const handleSaveClick = () => {
+    setIsEditing(false);
+    updateTodo(todo.id, currentTitle);
+  }
 
   return (
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {todoList.map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
-
-        return (
-          <ListItem
-            key={`${value.text}_${value.deadline}`}
-            secondaryAction={
-              <>
-                <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
-                  <DeleteIcon />
-                </IconButton>
-              </>
-            }
-            disablePadding
-          >
-            <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={checked.indexOf(value) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{ 'aria-labelledby': labelId }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={value.text} />
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
-    </List>
+    <ListItem alignItems="flex-start">
+      <ListItemIcon>
+        <Checkbox
+          edge="start"
+          checked={todo.isDone}
+          disableRipple
+        />
+      </ListItemIcon>
+      {isEditing ?
+        <div>
+          <TextField
+            value={currentTitle}
+            onChange={(e) => setCurrentTitle(e.target.value)}
+            margin="dense"
+            fullWidth
+          />
+          <Button onClick={handleSaveClick} color="primary" variant="contained">
+            Save
+          </Button>
+        </div>
+        :
+        <div onClick={() => setIsEditing(true)}>
+          <ListItemText
+            primary={todo.title}
+            secondary={todo.isDone ? 'Completed' : 'Incomplete'}
+          />
+        </div>
+      }
+      <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="delete" onClick={() => deleteTodo(todo.id)}>
+          <DeleteIcon />
+        </IconButton>
+        {!isEditing &&
+          <IconButton edge="end" aria-label="edit" onClick={() => setIsEditing(true)}>
+            <EditIcon />
+          </IconButton>
+        }
+      </ListItemSecondaryAction>
+    </ListItem>
   );
-}
+};
