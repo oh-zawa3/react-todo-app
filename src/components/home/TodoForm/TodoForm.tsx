@@ -27,12 +27,7 @@ export const TodoForm = memo((props: TodoFormProps) => {
 
   /** ボタンの挙動の管理  */
   const handleClickButton = () => {
-    onClick({
-      id: Date.now(),
-      text: textValue.todo,
-      isDone: false,
-      deadline: null,
-    });
+    onClick({ text: textValue.todo, isDone: false, deadline: null }); // deadline は仮
     setTextValue(initialTextValue);
   };
 

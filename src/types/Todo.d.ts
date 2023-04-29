@@ -1,6 +1,6 @@
 export type Todo = {
-  id: number;
-  text: string;
-  deadline: string | null;
-  isDone: boolean; // isDoneプロパティを追加する
-};
+  text: string,
+  isDone: boolean,
+  deadline?: Date | null
+  // ... 他にも必要なものがあれば
+}

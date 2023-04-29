@@ -8,35 +8,26 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { styled } from '@mui/material/styles';
 import { Todo } from 'types/Todo';
 
 export type Props = {
   todoList: Todo[];
 }
 
-const StyledListItem = styled(ListItem)(({ theme, isDone }: { theme: any; isDone: boolean }) => ({
-  display: isDone ? 'none' : 'flex',
-  '&.isDone': {
-    textDecoration: 'line-through',
-    '& .MuiListItemIcon-root': {
-      opacity: 0.5,
-    },
-  },
-}));
-
-const StyledListItemText = styled(ListItemText)({
-  overflowWrap: 'break-word',
-});
-
 export const TodoMain: React.FC<Props> = ({ todoList }) => {
-  const [checkedIds, setCheckedIds] = useState<number[]>([]);
+  const [checked, setChecked] = useState<Todo[]>([]);
 
-  const handleToggle = (id: number) => () => {
-    setCheckedIds((prevIds) => [...prevIds, id]);
-    setTimeout(() => {
-      setCheckedIds((prevIds) => prevIds.filter((value) => value !== id));
-    }, 2000);
+  const handleToggle = (value: Todo) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
   };
 
   const handleEdit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
@@ -49,15 +40,13 @@ export const TodoMain: React.FC<Props> = ({ todoList }) => {
     console.log(`Deleting: ${value.text}`);
   };
 
-  const filteredTodoList = todoList.filter((todo) => !checkedIds.includes(todo.id));
-
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {filteredTodoList.map((value) => {
+      {todoList.map((value) => {
         const labelId = `checkbox-list-label-${value}`;
 
         return (
-          <StyledListItem
+          <ListItem
             key={`${value.text}_${value.deadline}`}
             secondaryAction={
               <>
@@ -70,24 +59,22 @@ export const TodoMain: React.FC<Props> = ({ todoList }) => {
               </>
             }
             disablePadding
-            isDone={checkedIds.includes(value.id)}
-            className={checkedIds.includes(value.id) ? 'isDone' : ''}
           >
-            <ListItemButton role={undefined} onClick={handleToggle(value.id)} dense>
+            <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
               <ListItemIcon>
                 <Checkbox
                   edge="start"
-                  checked={checkedIds.indexOf(value.id) !== -1}
+                  checked={checked.indexOf(value) !== -1}
                   tabIndex={-1}
                   disableRipple
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <StyledListItemText id={labelId} primary={value.text} />
+              <ListItemText id={labelId} primary={value.text} />
             </ListItemButton>
-          </StyledListItem>
+          </ListItem>
         );
       })}
     </List>
   );
-};
+}
