@@ -49,10 +49,16 @@ export const Home = memo(() => {
     setOpen(false);
   };
 
-    const [todoList, setTodoList] = useState<Todo[]>([])
+  const [todoList, setTodoList] = useState<Todo[]>([]);
+
   const addTodo = (todo: Todo) => {
-    setTodoList([...todoList, todo])
-  }
+    setTodoList([...todoList, todo]);
+  };
+
+  const deleteTodo = (todo: Todo) => {
+    const newTodoList = todoList.filter((item) => item !== todo);
+    setTodoList(newTodoList);
+  };
 
 
   return (
@@ -63,7 +69,7 @@ export const Home = memo(() => {
         <DrawerHeader />
         <Typography>
           <TodoForm onClick={(todo) => addTodo(todo)} />
-          <TodoMain todoList={todoList} />
+          <TodoMain todoList={todoList} setTodoList={setTodoList} />
         </Typography>
       </Main>
       <CustomDrawer open={open} handleDrawerClose={handleDrawerClose} />

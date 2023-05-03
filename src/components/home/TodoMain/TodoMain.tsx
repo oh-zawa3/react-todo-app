@@ -12,9 +12,10 @@ import { Todo } from 'types/Todo';
 
 export type Props = {
   todoList: Todo[];
+  setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
-export const TodoMain: React.FC<Props> = ({ todoList }) => {
+export const TodoMain: React.FC<Props> = ({ todoList, setTodoList }) => {
   const [checked, setChecked] = useState<Todo[]>([]);
 
   const handleToggle = (value: Todo) => () => {
@@ -37,7 +38,8 @@ export const TodoMain: React.FC<Props> = ({ todoList }) => {
 
   const handleDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
     event.stopPropagation();
-    console.log(`Deleting: ${value.text}`);
+    const newTodoList = todoList.filter(todo => todo !== value);
+    setTodoList(newTodoList);
   };
 
   return (
