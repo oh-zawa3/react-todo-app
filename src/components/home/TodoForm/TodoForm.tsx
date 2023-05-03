@@ -4,6 +4,8 @@ import { TemplateButton } from "Components/Home/TodoForm/Button";
 import { TextFields } from "Components/Home/TodoForm/TextField";
 import { Box } from '@mui/material';
 import { Todo } from "types/Todo";
+import { v4 as uuidv4 } from 'uuid';
+
 
 
 type TodoFormProps = {
@@ -27,9 +29,18 @@ export const TodoForm = memo((props: TodoFormProps) => {
 
   /** ボタンの挙動の管理  */
   const handleClickButton = () => {
-    onClick({ text: textValue.todo, isCompleted: false, deadline: null, isSometimes: false, isDeleted: false }); // deadline は仮
+    const newTodo: Todo = {
+      id: uuidv4(),
+      text: textValue.todo,
+      isCompleted: false,
+      deadline: null,
+      isSometimes: false,
+      isDeleted: false,
+    };
+    onClick(newTodo);
     setTextValue(initialTextValue);
   };
+
 
   return (
     <>

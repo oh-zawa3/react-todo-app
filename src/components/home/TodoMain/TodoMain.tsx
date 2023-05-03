@@ -37,18 +37,27 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
   // ここでフィルタリングを行う
   const filteredTodoList = useMemo(() => {
     switch (filter) {
-      case 'Today\'s':
-        return todoList.filter(todo => isToday(todo.deadline));
+      case "Today's":
+        return todoList.filter(
+          (todo) => todo.deadline && isToday(todo.deadline)
+        );
       case 'Sometimes':
-        return todoList.filter(todo => isSometimes(todo.deadline));
+        return todoList.filter(
+          (todo) => todo.deadline && isSometimes(todo.deadline)
+        );
       case 'CompletionLog':
-        return todoList.filter(todo => todo.isCompleted);
+        return todoList.filter((todo) => todo.isCompleted);
       case 'Trash':
-        return todoList.filter(todo => todo.isDeleted);
+        return todoList.filter((todo) => todo.isDeleted);
       default:
-        return todoList.filter(todo => !todo.isCompleted && !todo.isDeleted);
+        return todoList.filter(
+          (todo) => !todo.isCompleted && !todo.isDeleted
+        );
     }
   }, [filter, todoList]);
+
+  console.log('todoList:', todoList);
+  console.log('filteredTodoList:', filteredTodoList);
 
   const [checked, setChecked] = useState<Todo[]>([]);
 
@@ -79,11 +88,11 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       {filteredTodoList.map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
+        const labelId = `checkbox-list-label-${value.id ?? ''}`;
 
         return (
           <ListItem
-            key={`${value.text}_${value.deadline}`}
+            key={value.id}
             secondaryAction={
               <>
                 <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
