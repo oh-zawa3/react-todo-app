@@ -76,7 +76,7 @@ export const TodoHeader = ({ open, handleDrawerOpen }: TodoHeaderProps) => {
   return (
     <AppBar position="fixed" open={open}>
       <Toolbar>
-        <Typography variant="h5" noWrap component="div" >
+        <Typography variant="h5" noWrap component="div"  sx={{ display: { xs: 'none', sm: 'block' } }} >
           Todo
         </Typography>
         <Search>

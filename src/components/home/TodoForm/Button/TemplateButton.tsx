@@ -12,7 +12,6 @@ export const TemplateButton = (props:any) => {
         disabled={disabled}
         name={title}
         onClick={handleClick}
-        // buttonName={buttonName}
       >
         追加
       </Button>
