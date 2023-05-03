@@ -39,11 +39,11 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
     switch (filter) {
       case 'Today\'s':
         return todoList.filter(todo => isToday(todo.deadline));
-      case 'sometimes':
+      case 'Sometimes':
         return todoList.filter(todo => isSometimes(todo.deadline));
-      case 'completionLog':
+      case 'CompletionLog':
         return todoList.filter(todo => todo.isCompleted);
-      case 'trash':
+      case 'Trash':
         return todoList.filter(todo => todo.isDeleted);
       default:
         return todoList.filter(todo => !todo.isCompleted && !todo.isDeleted);
@@ -78,7 +78,7 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {todoList.map((value) => {
+      {filteredTodoList.map((value) => {
         const labelId = `checkbox-list-label-${value}`;
 
         return (

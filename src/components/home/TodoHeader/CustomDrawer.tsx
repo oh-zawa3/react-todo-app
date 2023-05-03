@@ -47,22 +47,22 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerCl
   const handleItemClick = (listType: string) => {
     switch (listType) {
       case "Inbox":
-        setFilter("inbox");
+        setFilter("Inbox");
         break;
       case "Today's":
         setFilter("Today's");
         break;
       case "Sometimes":
-        setFilter("sometimes");
+        setFilter("Sometimes");
         break;
       case "CompletionLog":
-        setFilter("completionLog");
+        setFilter("CompletionLog");
         break;
       case "Trash":
-        setFilter("trash");
+        setFilter("Trash");
         break;
       default:
-        setFilter("inbox");
+        setFilter("Inbox");
         break;
     }
     handleDrawerClose();

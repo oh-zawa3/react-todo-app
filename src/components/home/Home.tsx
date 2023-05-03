@@ -55,11 +55,6 @@ export const Home = memo(() => {
     setTodoList([...todoList, todo]);
   };
 
-  const deleteTodo = (todo: Todo) => {
-    const newTodoList = todoList.filter((item) => item !== todo);
-    setTodoList(newTodoList);
-  };
-
   const [filter, setFilter] = useState<string>('inbox');
 
   return (
