@@ -1,6 +1,8 @@
 export type Todo = {
   text: string,
-  isDone: boolean,
+  isCompleted: boolean,
   deadline?: Date | null
+  isSometimes?: boolean;
+  isDeleted: boolean;
   // ... 他にも必要なものがあれば
 }

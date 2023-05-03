@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -13,9 +13,43 @@ import { Todo } from 'types/Todo';
 export type Props = {
   todoList: Todo[];
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
-}
+  filter: string;
+};
 
-export const TodoMain: React.FC<Props> = ({ todoList, setTodoList }) => {
+const isToday = (date: Date | null | undefined) => {
+  const targetDate = date ? new Date(date) : new Date();
+  const today = new Date();
+  return (
+    targetDate.getDate() === today.getDate() &&
+    targetDate.getMonth() === today.getMonth() &&
+    targetDate.getFullYear() === today.getFullYear()
+  );
+};
+
+const isSometimes = (date: Date | null | undefined) => {
+  const targetDate = date ? new Date(date) : new Date();
+  const today = new Date();
+  const oneWeekLater = new Date(today.setDate(today.getDate() + 7));
+  return targetDate >= today && targetDate <= oneWeekLater;
+};
+
+export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => {
+  // ここでフィルタリングを行う
+  const filteredTodoList = useMemo(() => {
+    switch (filter) {
+      case 'Today\'s':
+        return todoList.filter(todo => isToday(todo.deadline));
+      case 'sometimes':
+        return todoList.filter(todo => isSometimes(todo.deadline));
+      case 'completionLog':
+        return todoList.filter(todo => todo.isCompleted);
+      case 'trash':
+        return todoList.filter(todo => todo.isDeleted);
+      default:
+        return todoList.filter(todo => !todo.isCompleted && !todo.isDeleted);
+    }
+  }, [filter, todoList]);
+
   const [checked, setChecked] = useState<Todo[]>([]);
 
   const handleToggle = (value: Todo) => () => {

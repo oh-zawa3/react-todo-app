@@ -60,6 +60,7 @@ export const Home = memo(() => {
     setTodoList(newTodoList);
   };
 
+  const [filter, setFilter] = useState<string>('inbox');
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -69,10 +70,10 @@ export const Home = memo(() => {
         <DrawerHeader />
         <Typography>
           <TodoForm onClick={(todo) => addTodo(todo)} />
-          <TodoMain todoList={todoList} setTodoList={setTodoList} />
+          <TodoMain todoList={todoList} setTodoList={setTodoList} filter={filter} />
         </Typography>
       </Main>
-      <CustomDrawer open={open} handleDrawerClose={handleDrawerClose} />
+      <CustomDrawer open={open} handleDrawerClose={handleDrawerClose} setFilter={setFilter} />
     </Box>
   );
 })

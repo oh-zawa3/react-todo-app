@@ -17,9 +17,10 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 interface CustomDrawerProps {
   open: boolean;
   handleDrawerClose: () => void;
+  setFilter: (filter: string) => void;
 }
 
-export const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerClose }) => {
+export const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerClose, setFilter }) => {
   const theme = useTheme();
 
   const getIcon = (text: string) => {
@@ -43,6 +44,30 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerCl
     }
   }
 
+  const handleItemClick = (listType: string) => {
+    switch (listType) {
+      case "Inbox":
+        setFilter("inbox");
+        break;
+      case "Today's":
+        setFilter("Today's");
+        break;
+      case "Sometimes":
+        setFilter("sometimes");
+        break;
+      case "CompletionLog":
+        setFilter("completionLog");
+        break;
+      case "Trash":
+        setFilter("trash");
+        break;
+      default:
+        setFilter("inbox");
+        break;
+    }
+    handleDrawerClose();
+  };
+
   return (
     <Drawer
       sx={{
@@ -65,7 +90,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerCl
       <List>
         {['Inbox', "Today's", 'Sometimes', 'CompletionLog'].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => handleItemClick(text)}>
               <ListItemIcon>
                 {getIcon(text)}
               </ListItemIcon>
@@ -78,7 +103,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerCl
       <List>
         {['Trash', 'Profile', 'Settings'].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => handleItemClick(text)}>
               <ListItemIcon>
                 {getIcon(text)}
               </ListItemIcon>
