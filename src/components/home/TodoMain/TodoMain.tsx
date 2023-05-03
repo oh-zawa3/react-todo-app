@@ -9,30 +9,8 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Todo } from 'types/Todo';
-import { styled } from '@mui/material/styles';
 
-const drawerWidth = 240;
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
-  open?: boolean;
-}>(({ theme, open }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create('margin', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  marginRight: -drawerWidth,
-  ...(open && {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginRight: 0,
-  }),
-}));
-
-interface Props {
+export type Props = {
   todoList: Todo[];
 }
 
@@ -63,42 +41,40 @@ export const TodoMain: React.FC<Props> = ({ todoList }) => {
   };
 
   return (
-    <Main open={true}>
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        {todoList.map((value) => {
-          const labelId = `checkbox-list-label-${value}`;
+    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      {todoList.map((value) => {
+        const labelId = `checkbox-list-label-${value}`;
 
-          return (
-            <ListItem
-              key={`${value.text}_${value.deadline}`}
-              secondaryAction={
-                <>
-                  <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </>
-              }
-              disablePadding
-            >
-              <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={checked.indexOf(value) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': labelId }}
-                  />
-                </ListItemIcon>
-                <ListItemText id={labelId} primary={value.text} />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
-    </Main>
+        return (
+          <ListItem
+            key={`${value.text}_${value.deadline}`}
+            secondaryAction={
+              <>
+                <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            }
+            disablePadding
+          >
+            <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+              <ListItemIcon>
+                <Checkbox
+                  edge="start"
+                  checked={checked.indexOf(value) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{ 'aria-labelledby': labelId }}
+                />
+              </ListItemIcon>
+              <ListItemText id={labelId} primary={value.text} />
+            </ListItemButton>
+          </ListItem>
+        );
+      })}
+    </List>
   );
-};
+}
