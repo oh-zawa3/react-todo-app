@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { Box, CssBaseline, Typography } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { TodoHeader } from "Components/Home/TodoHeader/TodoHeader";
 import { CustomDrawer } from "Components/Home/TodoHeader/CustomDrawer";
 import { TodoMain } from 'Components/Home/TodoMain/TodoMain';
@@ -39,7 +39,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export const Home = memo(() => {
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
