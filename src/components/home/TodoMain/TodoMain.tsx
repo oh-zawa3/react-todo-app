@@ -81,8 +81,12 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
 
   const handleDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
     event.stopPropagation();
-    const newTodoList = todoList.filter(todo => todo !== value);
-    setTodoList(newTodoList);
+    const newTodoList = [...todoList];
+    const index = newTodoList.findIndex(todo => todo === value);
+    if (index >= 0) {
+      newTodoList[index].isDeleted = !newTodoList[index].isDeleted; // isDeletedを切り替える
+      setTodoList(newTodoList);
+    }
   };
 
   return (
