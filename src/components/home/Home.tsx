@@ -65,7 +65,7 @@ export const Home = memo(() => {
         <DrawerHeader />
         <Typography>
           <TodoForm onClick={(todo) => addTodo(todo)} />
-          <TodoMain todoList={todoList} setTodoList={setTodoList} filter={filter} />
+          <TodoMain todoList={todoList} setTodoList={setTodoList} filter={filter} currentFilterName={filter}  />
         </Typography>
       </Main>
       <CustomDrawer open={open} handleDrawerClose={handleDrawerClose} setFilter={setFilter} />
