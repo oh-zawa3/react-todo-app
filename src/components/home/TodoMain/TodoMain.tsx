@@ -93,6 +93,16 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
     }
 
     setChecked(newChecked);
+
+    // 1秒後にisCompletedをtrueに切り替える
+    setTimeout(() => {
+      const index = todoList.findIndex(todo => todo === value);
+      if (index >= 0) {
+        const newTodoList = [...todoList];
+        newTodoList[index].isCompleted = true;
+        setTodoList(newTodoList);
+      }
+    }, 1000);
   };
 
   const handleEdit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
