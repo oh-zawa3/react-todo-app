@@ -77,9 +77,6 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
       break;
   }
 
-  console.log('todoList:', todoList);
-  console.log('filteredTodoList:', filteredTodoList);
-
   const [checked, setChecked] = useState<Todo[]>([]);
 
   const handleToggle = (value: Todo) => () => {
@@ -143,21 +140,23 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
               disablePadding
             >
               <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={checked.indexOf(value) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': labelId }}
-                  />
-                </ListItemIcon>
+                {value.isCompleted ? null : (
+                  <ListItemIcon>
+                    <Checkbox
+                      edge="start"
+                      checked={checked.indexOf(value) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                  </ListItemIcon>
+                )}
                 <ListItemText id={labelId} primary={value.text} />
               </ListItemButton>
             </ListItem>
           );
         })}
-        </List>
-      </>
+      </List>
+    </>
   );
 }
