@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from "react";
 import { initialTextValue } from "Components/Home/TodoForm/const";
 import { TemplateButton } from "Components/Home/TodoForm/Button";
-import { TextFields } from "Components/Home/TodoForm/TextField";
+import { TodoTextField } from "Components/Home/TodoForm/TodoTextField";
 import { Box } from '@mui/material';
 import { Todo } from "types/Todo";
 import { v4 as uuidv4 } from 'uuid';
@@ -45,7 +45,7 @@ export const TodoForm = memo((props: TodoFormProps) => {
   return (
     <>
       <Box sx={{ display: 'flex' }}>
-        <TextFields
+        <TodoTextField
           title="todo"
           textValue={textValue}
           handleChange={handleChangeText}

@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import { Todo } from 'types/Todo';
 
 export type Props = {
@@ -78,33 +79,59 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
   }
 
   const [checked, setChecked] = useState<Todo[]>([]);
+  const [editingItem, setEditingItem] = useState<Todo | null>(null); // 編集中のアイテム
+  const [editText, setEditText] = useState<string>(''); // 編集中のテキスト
 
-  const handleToggle = (value: Todo) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  const handleToggle = (value: Todo) => (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  // editモードでなければ、チェックボックスをトグルする
+    if (!editingItem) {
+      const currentIndex = checked.indexOf(value);
+      const newChecked = [...checked];
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-
-    // 1秒後にisCompletedをtrueに切り替える
-    setTimeout(() => {
-      const index = todoList.findIndex(todo => todo === value);
-      if (index >= 0) {
-        const newTodoList = [...todoList];
-        newTodoList[index].isCompleted = true;
-        setTodoList(newTodoList);
+      if (currentIndex === -1) {
+        newChecked.push(value);
+      } else {
+        newChecked.splice(currentIndex, 1);
       }
-    }, 1000);
+
+      setChecked(newChecked);
+
+      // 1秒後にisCompletedをtrueに切り替える
+      setTimeout(() => {
+        const index = todoList.findIndex((todo) => todo === value);
+        if (index >= 0) {
+          const newTodoList = [...todoList];
+          newTodoList[index].isCompleted = true;
+          setTodoList(newTodoList);
+        }
+      }, 1000);
+    }
   };
 
   const handleEdit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
     event.stopPropagation();
-    console.log(`Editing: ${value.text}`);
+    if (!editingItem) {
+      setEditingItem(value);
+      setEditText(value.text);
+    }
+  };
+
+  const handleSave = () => {
+    if (editingItem) {
+      const newTodoList = [...todoList];
+      const index = newTodoList.findIndex(todo => todo === editingItem);
+      if (index >= 0) {
+        newTodoList[index].text = editText;
+        setTodoList(newTodoList);
+        setEditingItem(null);
+        setEditText('');
+      }
+    }
+  };
+
+  const handleCancel = () => {
+    setEditingItem(null);
+    setEditText('');
   };
 
   const handleDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Todo) => {
@@ -125,38 +152,59 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
           const labelId = `checkbox-list-label-${value.id ?? ''}`;
 
           return (
-            <ListItem
-              key={value.id}
-              secondaryAction={
-                <>
-                  <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </>
-              }
-              disablePadding
-            >
-              <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-                {value.isCompleted ? null : (
-                  <ListItemIcon>
-                    <Checkbox
-                      edge="start"
-                      checked={checked.indexOf(value) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      inputProps={{ 'aria-labelledby': labelId }}
-                    />
-                  </ListItemIcon>
+          <ListItem
+            key={value.id}
+            secondaryAction={
+              <>
+                {editingItem === value ? (
+                  <>
+                    <IconButton edge="end" aria-label="save" onClick={handleSave}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton edge="end" aria-label="cancel" onClick={handleCancel}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </>
+                ) : (
+                  <>
+                    <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </>
                 )}
+              </>
+            }
+            disablePadding
+          >
+            <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+              {value.isCompleted ? null : (
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={checked.indexOf(value) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ 'aria-labelledby': labelId }}
+                  />
+                </ListItemIcon>
+              )}
+              {editingItem === value ? (
+                <TextField
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  onClick={(event) => event.stopPropagation()} // ここでクリックを停止する
+                />
+              ) : (
                 <ListItemText id={labelId} primary={value.text} />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
-    </>
-  );
-}
+              )}
+            </ListItemButton>
+          </ListItem>
+        );
+      })}
+    </List>
+  </>
+);
+};

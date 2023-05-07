@@ -13,7 +13,7 @@ type TextFieldsProps = {
  * @param props
  * @returns
  */
-export const TextFields = ({ title, handleChange, textValue }: TextFieldsProps) => {
+export const TodoTextField = ({ title, handleChange, textValue }: TextFieldsProps) => {
 
   return (
     <Box
