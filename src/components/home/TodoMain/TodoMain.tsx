@@ -1,15 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
+import { IconButton, Typography, TextField } from '@mui/material';
+import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import { Todo } from 'types/Todo';
 
 export type Props = {
@@ -152,59 +145,59 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
           const labelId = `checkbox-list-label-${value.id ?? ''}`;
 
           return (
-          <ListItem
-            key={value.id}
-            secondaryAction={
-              <>
-                {editingItem === value ? (
-                  <>
-                    <IconButton edge="end" aria-label="save" onClick={handleSave}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="cancel" onClick={handleCancel}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </>
-                ) : (
-                  <>
-                    <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </>
+            <ListItem
+              key={value.id}
+              secondaryAction={
+                <>
+                  {editingItem === value ? (
+                    <>
+                      <IconButton edge="end" aria-label="save" onClick={handleSave}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton edge="end" aria-label="cancel" onClick={handleCancel}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
+                  ) : (
+                    <>
+                      <IconButton edge="end" aria-label="edit" onClick={(event) => handleEdit(event, value)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton edge="end" aria-label="delete" onClick={(event) => handleDelete(event, value)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
+                  )}
+                </>
+              }
+              disablePadding
+            >
+              <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+                {value.isCompleted ? null : (
+                  <ListItemIcon>
+                    <Checkbox
+                      edge="start"
+                      checked={checked.indexOf(value) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                  </ListItemIcon>
                 )}
-              </>
-            }
-            disablePadding
-          >
-            <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-              {value.isCompleted ? null : (
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={checked.indexOf(value) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': labelId }}
+                {editingItem === value ? (
+                  <TextField
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                    onClick={(event) => event.stopPropagation()} // ここでクリックを停止する
                   />
-                </ListItemIcon>
-              )}
-              {editingItem === value ? (
-                <TextField
-                  value={editText}
-                  onChange={(e) => setEditText(e.target.value)}
-                  onClick={(event) => event.stopPropagation()} // ここでクリックを停止する
-                />
-              ) : (
-                <ListItemText id={labelId} primary={value.text} />
-              )}
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
-    </List>
-  </>
-);
+                ) : (
+                  <ListItemText id={labelId} primary={value.text} />
+                )}
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
+    </>
+  );
 };
