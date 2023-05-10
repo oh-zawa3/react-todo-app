@@ -19,7 +19,8 @@ export const TodoTextField = ({ title, handleChange, textValue }: TextFieldsProp
     <Box
       component="form"
       sx={{
-        '& > :not(style)': { m: 1, width: '30ch' },
+        '& > :not(style)': { m: 0, width: '30ch' },
+        mr: 1
       }}
       noValidate
       autoComplete="off"

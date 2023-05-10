@@ -6,8 +6,6 @@ import { Box } from '@mui/material';
 import { Todo } from "types/Todo";
 import { v4 as uuidv4 } from 'uuid';
 
-
-
 type TodoFormProps = {
   onClick: (todo: Todo) => void;
 }
@@ -40,7 +38,6 @@ export const TodoForm = memo((props: TodoFormProps) => {
     onClick(newTodo);
     setTextValue(initialTextValue);
   };
-
 
   return (
     <>
