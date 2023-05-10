@@ -170,7 +170,6 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
                   )}
                 </>
               }
-              disablePadding
             >
               <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
                 {value.isCompleted ? null : (
