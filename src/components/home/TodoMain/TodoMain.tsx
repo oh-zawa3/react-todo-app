@@ -34,7 +34,7 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
   const [editingItem, setEditingItem] = useState<Todo | null>(null); // 編集中のアイテム
   const [editText, setEditText] = useState<string>(''); // 編集中のテキスト
   const [page, setPage] = useState(1);
-  const todosPerPage = 10;
+  const todoPerPage = 10;
 
   // ここでフィルタリングを行う
   const filteredTodoList = useMemo(() => {
@@ -60,10 +60,10 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
 
   // フィルタリング後のTodoリストをページごとに分割
   const pagedTodoList = useMemo(() => {
-    const startIndex = (page - 1) * todosPerPage;
-    const endIndex = startIndex + todosPerPage;
+    const startIndex = (page - 1) * todoPerPage;
+    const endIndex = startIndex + todoPerPage;
     return filteredTodoList.slice(startIndex, endIndex);
-  }, [filteredTodoList, page, todosPerPage]);
+  }, [filteredTodoList, page, todoPerPage]);
 
   let filterName = '';
   switch (filter) {
@@ -207,7 +207,7 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
         })}
       </List>
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
-        <Pagination count={Math.ceil(filteredTodoList.length / todosPerPage)} page={page} onChange={(event, value) => setPage(value)} />
+        <Pagination count={Math.ceil(filteredTodoList.length / todoPerPage)} page={page} onChange={(event, value) => setPage(value)} />
       </Box>
     </>
   );
