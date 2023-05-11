@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import { IconButton, Typography, TextField } from '@mui/material';
+import { IconButton, Typography, TextField, Pagination, Box } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import { Todo } from 'types/Todo';
 
@@ -30,6 +30,12 @@ const isSometimes = (date: Date | null | undefined) => {
 };
 
 export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => {
+  const [checked, setChecked] = useState<Todo[]>([]);
+  const [editingItem, setEditingItem] = useState<Todo | null>(null); // 編集中のアイテム
+  const [editText, setEditText] = useState<string>(''); // 編集中のテキスト
+  const [page, setPage] = useState(1);
+  const todosPerPage = 10;
+
   // ここでフィルタリングを行う
   const filteredTodoList = useMemo(() => {
     switch (filter) {
@@ -52,6 +58,13 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
     }
   }, [filter, todoList]);
 
+  // フィルタリング後のTodoリストをページごとに分割
+  const pagedTodoList = useMemo(() => {
+    const startIndex = (page - 1) * todosPerPage;
+    const endIndex = startIndex + todosPerPage;
+    return filteredTodoList.slice(startIndex, endIndex);
+  }, [filteredTodoList, page, todosPerPage]);
+
   let filterName = '';
   switch (filter) {
     case "Today's":
@@ -70,10 +83,6 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
       filterName = 'Inbox';
       break;
   }
-
-  const [checked, setChecked] = useState<Todo[]>([]);
-  const [editingItem, setEditingItem] = useState<Todo | null>(null); // 編集中のアイテム
-  const [editText, setEditText] = useState<string>(''); // 編集中のテキスト
 
   const handleToggle = (value: Todo) => (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
   // editモードでなければ、チェックボックスをトグルする
@@ -141,7 +150,7 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
     <>
       <Typography variant="h6">{filterName}</Typography>
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        {filteredTodoList.map((value) => {
+        {pagedTodoList.map((value) => {
           const labelId = `checkbox-list-label-${value.id ?? ''}`;
 
           return (
@@ -197,6 +206,9 @@ export const TodoMain: React.FC<Props> = ({ todoList, setTodoList, filter }) => 
           );
         })}
       </List>
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
+        <Pagination count={Math.ceil(filteredTodoList.length / todosPerPage)} page={page} onChange={(event, value) => setPage(value)} />
+      </Box>
     </>
   );
 };
